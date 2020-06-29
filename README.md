@@ -1,6 +1,11 @@
 # dict-schema-validator
 Validate python dictionaries (mongodb docs etc) using a JSON schema.
 
+
+# Install
+`pip install dict-schema-validator`
+
+
 # JSON Schema example
 Here is a simple schema representing a `Customer`:
 ```json
