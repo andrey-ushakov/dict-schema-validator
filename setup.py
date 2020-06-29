@@ -10,7 +10,7 @@ setuptools.setup(
     description="Validate python dictionaries (mongodb docs etc) using a JSON schema",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/andrey-ushakov/",
+    url="https://github.com/andrey-ushakov/dict-schema-validator",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
