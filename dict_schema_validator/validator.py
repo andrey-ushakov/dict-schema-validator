@@ -101,7 +101,7 @@ def validate(m, doc, path=''):
         # Model field is an array of strings (means data value can have any of the presented types)
         # ex: [['number', 'string'], 1]
         if type(m[key]) is list and type(m[key][0]) is list and type(m[key][0][0]) is str:
-            res = any(validate_type(doc[key][0], cur_type) for cur_type in m[key][0])
+            res = any(validate_type(doc[key], cur_type) for cur_type in m[key][0])
             if not res:
                 # log()
                 fullpath = build_path(path, key)
