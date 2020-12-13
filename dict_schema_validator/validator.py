@@ -38,6 +38,23 @@ def validate_type(value, type_str):
     else:
         raise Exception('Model type is not valid')
 
+def get_default_value(m_key):
+    # Model field is an array of objects
+    # case1:     foo: [{bar: ['string', 'value']}]
+    if type(m_key) is list and type(m_key[0]) is dict:
+        return []
+
+    # Model field is an object
+    # case2:     foo: {bar: ['string', 'value']}
+    if type(m_key) is dict:
+        res = {}
+        for key in m_key.keys():
+            res[key] = get_default_value(m_key[key])
+        return res
+
+    # case3:     foo: ['string', 'value']
+    return m_key[1]
+
 
 def validate(m, doc, path=''):
     result = []
@@ -67,7 +84,7 @@ def validate(m, doc, path=''):
                 'msg': '[-] Missing field: "{}"'.format(fullpath),
                 'type': 'missing_field',
                 'path': fullpath,
-                'default_value': m[key][1]
+                'default_value': get_default_value(m[key])
             })
             continue
 
