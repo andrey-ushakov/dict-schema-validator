@@ -67,6 +67,7 @@ def validate(m, doc, path=''):
                 'msg': '[-] Missing field: "{}"'.format(fullpath),
                 'type': 'missing_field',
                 'path': fullpath,
+                'default_value': m[key][1]
             })
             continue
 
@@ -81,12 +82,13 @@ def validate(m, doc, path=''):
             continue
 
         # Model field is an array of strings (means data value can have any of the presented types)
-        if type(m[key]) is list and type(m[key][0]) is str:
-            res = any(validate_type(doc[key], cur_type) for cur_type in m[key])
+        # ex: [['number', 'string'], 1]
+        if type(m[key]) is list and type(m[key][0]) is list and type(m[key][0][0]) is str:
+            res = any(validate_type(doc[key][0], cur_type) for cur_type in m[key][0])
             if not res:
                 # log()
                 fullpath = build_path(path, key)
-                expected = m[key]
+                expected = m[key][0]
                 found = type(doc[key]).__name__
                 result.append({
                     'msg': '[*] "{}" has wrong type. Expected one of: "{}", found: "{}"'.format(fullpath, expected,found),
@@ -97,16 +99,16 @@ def validate(m, doc, path=''):
                 })
             continue
 
-        # Model field is a string
+        # Model field is an array and 1st element is a string
         res = None
         try:
-            res = validate_type(doc[key], m[key])
+            res = validate_type(doc[key], m[key][0])
         except Exception as e:
             raise Exception('[@@@] Model is not valid: "{}" has incorrect type: "{}"'.format(key, m[key]))
         if not res:
             # log()
             fullpath = build_path(path, key)
-            expected = m[key]
+            expected = m[key][0]
             found = type(doc[key]).__name__
             result.append({
                 'msg': '[*] "{}" has wrong type. Expected: "{}", found: "{}"'.format(fullpath, expected, found),
