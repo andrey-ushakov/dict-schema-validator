@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dict-schema-validator",
-    version="0.1.2",
+    version="0.2.0",
     author="Andrey U",
     description="Validate python dictionaries (mongodb docs etc) using a JSON schema",
     long_description=long_description,
